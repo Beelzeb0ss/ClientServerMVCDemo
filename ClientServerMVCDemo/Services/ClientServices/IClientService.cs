@@ -4,9 +4,10 @@ namespace ClientServerMVCDemo.Services.ClientServices
 {
     public interface IClientService
     {
-        void Create(Client client);
-        void Delete(Client client);
+        Task Create(Client client);
+        Task Delete(Client client);
+        Task<Client> GetById(int id);
         Task<IEnumerable<Client>> GetPage(int pageIndex, int pageSize);
-        void Update(Client client);
+        Task Update(Client client);
     }
 }

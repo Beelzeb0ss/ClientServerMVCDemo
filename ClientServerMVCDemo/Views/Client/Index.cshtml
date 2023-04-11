@@ -1,0 +1,21 @@
+﻿@model ClientServerMVCDemo.ViewModels.Client.ClientListViewModel
+<ul class="list-group">
+@foreach(var client in Model.Clients)
+{
+    <li class="list-group-item">
+        <div class="card-body">
+            <h5 class="card-title">@client.Name</h5>
+            <p class="card-text">@client.Description</p>
+            @if (client.Properties != null)
+            {
+                @foreach (var kvp in client.Properties)
+                {
+                    <p class="card-text">@kvp.Key = @kvp.Value</p>
+                }
+            }
+            <a asp-action="Edit" asp-route-id="@client.Id">Edit</a>
+            <a asp-action="Delete" asp-route-id="@client.Id">Delete</a>
+        </div>
+    </li>
+}
+</ul>

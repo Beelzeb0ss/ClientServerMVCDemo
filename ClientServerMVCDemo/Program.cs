@@ -1,5 +1,7 @@
 using ClientServerMVCDemo.Data.Context;
 using ClientServerMVCDemo.Data.UnitOfWork;
+using ClientServerMVCDemo.Services.ClientServices;
+using ClientServerMVCDemo.Services.ServerServices;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,8 @@ builder.Services.AddDbContext<ClientServerDbContext>(options =>
     options.UseInMemoryDatabase(databaseName: "ClientServerInMemoryDatabase");
 });
 builder.Services.AddScoped<IClientServerUnitOfWork, ClientServerUnitOfWork>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IServerService, ServerService>();
 
 builder.Services.AddControllersWithViews();
 

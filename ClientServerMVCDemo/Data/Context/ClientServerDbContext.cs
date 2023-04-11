@@ -1,5 +1,6 @@
 ﻿using ClientServerMVCDemo.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Xml;
 
 namespace ClientServerMVCDemo.Data.Context
@@ -13,6 +14,20 @@ namespace ClientServerMVCDemo.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Client>()
+                .Property(c => c.Properties)
+                .HasConversion(
+                    d => JsonConvert.SerializeObject(d),
+                    s => JsonConvert.DeserializeObject<Dictionary<string, string>>(s))
+                .HasColumnName("PropertiesJson").IsRequired(false);
+
+            modelBuilder.Entity<Server>()
+                .Property(x => x.Functions)
+                .HasConversion(
+                    d => JsonConvert.SerializeObject(d),
+                    s => JsonConvert.DeserializeObject<ICollection<string>>(s))
+                .HasColumnName("FunctionsJson").IsRequired(false); 
+
             modelBuilder.Entity<Client>().HasData(
                 new Client { Id = 1, Name = "Client1", Description = "Some client", Properties = new Dictionary<string, string>{ { "SomeProp1" , "Value1" } } },
                 new Client { Id = 2, Name = "Client2", Description = "Some other client", Properties = new Dictionary<string, string> { { "SomeProp2", "Value2" } } },
