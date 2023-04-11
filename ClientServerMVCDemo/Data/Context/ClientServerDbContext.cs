@@ -15,7 +15,9 @@ namespace ClientServerMVCDemo.Data.Context
         {
             modelBuilder.Entity<Client>().HasData(
                 new Client { Id = 1, Name = "Client1", Description = "Some client", Properties = new Dictionary<string, string>{ { "SomeProp1" , "Value1" } } },
-                new Client { Id = 2, Name = "Client2", Description = "Some other client", Properties = new Dictionary<string, string> { { "SomeProp2", "Value2" } } }
+                new Client { Id = 2, Name = "Client2", Description = "Some other client", Properties = new Dictionary<string, string> { { "SomeProp2", "Value2" } } },
+                new Client { Id = 3, Name = "Клиент1", Description = "Дали работи на български?", Properties = new Dictionary<string, string> { { "Нещо", "стойност" } } },
+                new Client { Id = 4, Name = "Клиент2", Description = "описание", Properties = new Dictionary<string, string> {  } }
             );
 
             modelBuilder.Entity<Server>().HasData(

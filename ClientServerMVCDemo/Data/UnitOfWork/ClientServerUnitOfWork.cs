@@ -4,13 +4,13 @@ using ClientServerMVCDemo.Data.Models;
 
 namespace ClientServerMVCDemo.Data.UnitOfWork
 {
-    public class ServerClientUnitOfWork : IServerClientUnitOfWork
+    public class ClientServerUnitOfWork : IClientServerUnitOfWork
     {
         private ClientServerDbContext context;
         private GenericRepository<Client> clientRepo;
         private GenericRepository<Server> serverRepo;
 
-        public ServerClientUnitOfWork(ClientServerDbContext context)
+        public ClientServerUnitOfWork(ClientServerDbContext context)
         {
             this.context = context;
         }
@@ -44,6 +44,11 @@ namespace ClientServerMVCDemo.Data.UnitOfWork
         public void Save()
         {
             context.SaveChanges();
+        }
+
+        public async Task SaveAsync()
+        {
+            await context.SaveChangesAsync();
         }
 
         private bool disposed = false;
