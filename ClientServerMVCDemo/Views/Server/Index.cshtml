@@ -1,0 +1,51 @@
+﻿@model ClientServerMVCDemo.ViewModels.Server.ServerListViewModel
+<h1>Servers</h1>
+<a asp-action="Create">Create new</a>
+<ul class="list-group">
+    @foreach (var server in Model.Servers)
+    {
+        <li class="list-group-item">
+            <div class="card-body">
+                <h5 class="card-title">@server.Name</h5>
+                <p class="card-text">@server.Description</p>
+                <hr/>
+                <p class="card-text">Functions</p>
+                @if (server.Functions != null)
+                {
+                    int count = 0;
+                    @foreach (var func in server.Functions)
+                    {
+                        <p class="card-text">@func</p>
+
+                        count++;
+                        if (count > 1)
+                        {
+                            <p class="card-text">...</p>
+                            break;
+                        }
+                    }
+                }
+                <a asp-action="Edit" asp-route-id="@server.Id">Edit</a>
+                <a asp-action="Delete" asp-route-id="@server.Id">Delete</a>
+            </div>
+        </li>
+    }
+</ul>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item @(Model.CurrentPage <= 1 ? "disabled" : "")">
+            <a class="page-link" asp-controller="Server" asp-action="Index" asp-route-page="@(Model.CurrentPage-1)" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li><p class="page-link">@Model.CurrentPage</p></li>
+        <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+            <a class="page-link" asp-controller="Server" asp-action="Index" asp-route-page="@(Model.CurrentPage+1)" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
+</nav>

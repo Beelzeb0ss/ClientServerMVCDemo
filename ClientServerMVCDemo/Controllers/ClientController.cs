@@ -1,7 +1,6 @@
 ﻿using ClientServerMVCDemo.Services.ClientServices;
 using ClientServerMVCDemo.ViewModels.Client;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 
 namespace ClientServerMVCDemo.Controllers
@@ -51,7 +50,7 @@ namespace ClientServerMVCDemo.Controllers
                 vm.Client.Properties = new Dictionary<string, string>();
             }
 
-            if(!vm.NewPropertyName.IsNullOrEmpty() && !vm.NewPropertyValue.IsNullOrEmpty())
+            if(!string.IsNullOrWhiteSpace(vm.NewPropertyName) && !string.IsNullOrWhiteSpace(vm.NewPropertyValue))
             {
                 vm.Client.Properties.Add(vm.NewPropertyName, vm.NewPropertyValue);
             }
@@ -82,7 +81,7 @@ namespace ClientServerMVCDemo.Controllers
                 vm.Client.Properties = new Dictionary<string, string>();
             }
 
-            if (!vm.NewPropertyName.IsNullOrEmpty() && !vm.NewPropertyValue.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(vm.NewPropertyName) && !string.IsNullOrWhiteSpace(vm.NewPropertyValue))
             {
                 vm.Client.Properties.Add(vm.NewPropertyName, vm.NewPropertyValue);
             }

@@ -9,6 +9,6 @@ namespace ClientServerMVCDemo.Data.Models
         public string Name { get; set; }
         public string Description { get; set; }
         [NotMapped]
-        public ICollection<string> Functions { get; set; }
+        public IList<string> Functions { get; set; }
     }
 }

@@ -6,7 +6,8 @@
         public Data.Models.Client Client 
         {
             get { return client; }
-            set {
+            set 
+            {
                 client = value;
                 if (client.Properties == null)
                 {

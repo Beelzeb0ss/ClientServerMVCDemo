@@ -25,7 +25,7 @@ namespace ClientServerMVCDemo.Data.Context
                 .Property(x => x.Functions)
                 .HasConversion(
                     d => JsonConvert.SerializeObject(d),
-                    s => JsonConvert.DeserializeObject<ICollection<string>>(s))
+                    s => JsonConvert.DeserializeObject<IList<string>>(s))
                 .HasColumnName("FunctionsJson").IsRequired(false); 
 
             modelBuilder.Entity<Client>().HasData(

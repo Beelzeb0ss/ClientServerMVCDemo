@@ -1,5 +1,6 @@
 ﻿using ClientServerMVCDemo.Data.Models;
 using ClientServerMVCDemo.Data.UnitOfWork;
+using ClientServerMVCDemo.Data.Utility;
 
 namespace ClientServerMVCDemo.Services.ServerServices
 {
@@ -12,26 +13,31 @@ namespace ClientServerMVCDemo.Services.ServerServices
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Server>> GetPage(int pageIndex, int pageSize)
+        public async Task<Server> GetById(int id)
+        {
+            return await unitOfWork.ServerRepo.GetByID(id);
+        }
+
+        public async Task<PaginatedList<Server>> GetPage(int pageIndex, int pageSize)
         {
             return await unitOfWork.ServerRepo.GetPage(pageIndex, pageSize, orderBy: x => x.Name);
         }
 
-        public async void Create(Server client)
+        public async Task Create(Server client)
         {
             unitOfWork.ServerRepo.Insert(client);
             await unitOfWork.SaveAsync();
         }
 
-        public async void Update(Server client)
+        public async Task Update(Server client)
         {
             unitOfWork.ServerRepo.Update(client);
             await unitOfWork.SaveAsync();
         }
 
-        public async void Delete(Server client)
+        public async Task Delete(int id)
         {
-            unitOfWork.ServerRepo.Delete(client);
+            unitOfWork.ServerRepo.Delete(id);
             await unitOfWork.SaveAsync();
         }
     }

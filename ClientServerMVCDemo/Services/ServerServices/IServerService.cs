@@ -1,12 +1,14 @@
 ﻿using ClientServerMVCDemo.Data.Models;
+using ClientServerMVCDemo.Data.Utility;
 
 namespace ClientServerMVCDemo.Services.ServerServices
 {
     public interface IServerService
     {
-        void Create(Server client);
-        void Delete(Server client);
-        Task<IEnumerable<Server>> GetPage(int pageIndex, int pageSize);
-        void Update(Server client);
+        Task Create(Server client);
+        Task Delete(int id);
+        Task<Server> GetById(int id);
+        Task<PaginatedList<Server>> GetPage(int pageIndex, int pageSize);
+        Task Update(Server client);
     }
 }
