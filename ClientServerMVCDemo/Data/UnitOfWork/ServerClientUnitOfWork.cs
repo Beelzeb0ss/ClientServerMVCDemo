@@ -6,9 +6,14 @@ namespace ClientServerMVCDemo.Data.UnitOfWork
 {
     public class ServerClientUnitOfWork : IServerClientUnitOfWork
     {
-        private ClientServerDbContext context = new ClientServerDbContext();
+        private ClientServerDbContext context;
         private GenericRepository<Client> clientRepo;
         private GenericRepository<Server> serverRepo;
+
+        public ServerClientUnitOfWork(ClientServerDbContext context)
+        {
+            this.context = context;
+        }
 
         public GenericRepository<Client> ClientRepo
         {

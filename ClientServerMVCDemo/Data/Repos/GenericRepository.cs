@@ -1,4 +1,5 @@
 ﻿using ClientServerMVCDemo.Data.Context;
+using ClientServerMVCDemo.Data.Utility;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -43,9 +44,9 @@ namespace ClientServerMVCDemo.Data.Repos
             }
         }
 
-        public virtual TEntity GetByID(object id)
+        public virtual async Task<TEntity> GetByID(object id)
         {
-            return dbSet.Find(id);
+            return await dbSet.FindAsync(id);
         }
 
         public virtual void Insert(TEntity entity)
@@ -72,6 +73,36 @@ namespace ClientServerMVCDemo.Data.Repos
         {
             dbSet.Attach(entityToUpdate);
             context.Entry(entityToUpdate).State = EntityState.Modified;
+        }
+
+        public virtual async Task<IEnumerable<TEntity>> GetPage(int? pageNumber, int pageSize, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, dynamic>> orderBy = null, bool isDecending = false, string includeProperties = "")
+        {
+            IQueryable<TEntity> query = dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                if (isDecending)
+                {
+                    query = query.OrderByDescending(orderBy);
+                }
+                else
+                {
+                    query = query.OrderBy(orderBy);
+                }
+            }
+
+            var paginatedList = await PaginatedList<TEntity>.CreateAsync(query, pageNumber ?? 1, pageSize);
+            return paginatedList.ToList();
         }
     }
 }

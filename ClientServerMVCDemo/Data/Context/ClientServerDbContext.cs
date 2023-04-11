@@ -9,10 +9,7 @@ namespace ClientServerMVCDemo.Data.Context
         public DbSet<Client> Clients { get; set; }
         public DbSet<Client> Servers { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseInMemoryDatabase(databaseName: "ClientServerInMemoryDatabase");
-        }
+        public ClientServerDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
