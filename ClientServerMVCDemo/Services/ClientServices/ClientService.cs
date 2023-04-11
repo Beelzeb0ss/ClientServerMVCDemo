@@ -1,5 +1,6 @@
 ﻿using ClientServerMVCDemo.Data.UnitOfWork;
 using ClientServerMVCDemo.Data.Models;
+using ClientServerMVCDemo.Data.Utility;
 
 namespace ClientServerMVCDemo.Services.ClientServices
 {
@@ -17,7 +18,7 @@ namespace ClientServerMVCDemo.Services.ClientServices
             return await unitOfWork.ClientRepo.GetByID(id);
         }
 
-        public async Task<IEnumerable<Client>> GetPage(int pageIndex, int pageSize)
+        public async Task<PaginatedList<Client>> GetPage(int pageIndex, int pageSize)
         {
             return await unitOfWork.ClientRepo.GetPage(pageIndex, pageSize, orderBy: x => x.Name);
         }
@@ -34,9 +35,9 @@ namespace ClientServerMVCDemo.Services.ClientServices
             await unitOfWork.SaveAsync();
         }
 
-        public async Task Delete(Client client)
+        public async Task Delete(int id)
         {
-            unitOfWork.ClientRepo.Delete(client);
+            unitOfWork.ClientRepo.Delete(id);
             await unitOfWork.SaveAsync();
         }
     }

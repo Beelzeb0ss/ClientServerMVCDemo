@@ -15,14 +15,23 @@ namespace ClientServerMVCDemo.Controllers
             this.clientService = clientService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
+            Debug.WriteLine("page value = " + page);
             var viewModel = new ClientListViewModel();
-            
+
             //await clientService.Create(new Data.Models.Client() { Name = "Stoqn", Description = "desc", Properties = null });
             //await clientService.Create(new Data.Models.Client() { Name = "Stoqn", Description = "desc", Properties = new Dictionary<string, string> { { "1", "Value1"} } });
-            
-            viewModel.Clients = await clientService.GetPage(1, 3);
+
+            if(page == 0)
+            {
+                page = 1;
+            }
+            var pageData = await clientService.GetPage(page, 3);
+            viewModel.Clients = pageData.ToList();
+            viewModel.CurrentPage = pageData.PageIndex;
+            viewModel.HasNextPage = pageData.HasNextPage;
+            viewModel.HasPreviousPage = pageData.HasPreviousPage;
 
             return View(viewModel);
         }
@@ -80,6 +89,12 @@ namespace ClientServerMVCDemo.Controllers
 
             await clientService.Create(vm.Client);
             return Redirect("Index");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await clientService.Delete(id);
+            return RedirectToAction("Index");
         }
     }
 }

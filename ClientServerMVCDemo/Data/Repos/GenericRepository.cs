@@ -75,7 +75,7 @@ namespace ClientServerMVCDemo.Data.Repos
             context.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetPage(int? pageNumber, int pageSize, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, dynamic>> orderBy = null, bool isDecending = false, string includeProperties = "")
+        public virtual async Task<PaginatedList<TEntity>> GetPage(int? pageNumber, int pageSize, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, dynamic>> orderBy = null, bool isDecending = false, string includeProperties = "")
         {
             IQueryable<TEntity> query = dbSet;
 
@@ -102,7 +102,7 @@ namespace ClientServerMVCDemo.Data.Repos
             }
 
             var paginatedList = await PaginatedList<TEntity>.CreateAsync(query, pageNumber ?? 1, pageSize);
-            return paginatedList.ToList();
+            return paginatedList;
         }
     }
 }
