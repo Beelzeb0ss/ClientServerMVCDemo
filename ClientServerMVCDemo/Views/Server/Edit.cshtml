@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <hr />
-                <label>Properties</label>
+                <label>Functions</label>
                 @if (Model.Server.Functions != null)
                 {
                     @for(int i = 0; i < Model.Server.Functions.Count; i++)
@@ -36,7 +36,8 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">@Model.Server.Functions[i].Name</label>
                             <div class="col-lg-9">
-                                <input asp-for="@Model.Server.Functions[i].Name" value="@Model.Server.Functions[i].Name" class="form-control">
+                                <input asp-for="Server.Functions[i].Name" value="@Model.Server.Functions[i].Name" class="form-control">
+                                <span asp-validation-for="Server.Functions[i].Name" class="text-danger"></span>
                             </div>
                             <div class"col-lg-9">
                                 <label class="col-lg-3 col-form-label">Delete?</label>

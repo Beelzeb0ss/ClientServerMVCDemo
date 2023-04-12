@@ -23,7 +23,7 @@ namespace ClientServerMVCDemo.Controllers
             {
                 page = 1;
             }
-            var pageData = await clientService.GetPage(page, 3);
+            var pageData = await clientService.GetPage(page, 3, "Properties");
             viewModel.Clients = pageData.ToList();
             viewModel.CurrentPage = pageData.PageIndex;
             viewModel.HasNextPage = pageData.HasNextPage;

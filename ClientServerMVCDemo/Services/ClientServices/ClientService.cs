@@ -19,9 +19,17 @@ namespace ClientServerMVCDemo.Services.ClientServices
             return (await unitOfWork.ClientRepo.Get(x => x.Id == id, includeProperties:"Properties")).FirstOrDefault();
         }
 
-        public async Task<PaginatedList<Client>> GetPage(int pageIndex, int pageSize)
+        public async Task<PaginatedList<Client>> GetPage(int pageIndex, int pageSize, string includeProperties = "")
         {
-            return await unitOfWork.ClientRepo.GetPage(pageIndex, pageSize, orderBy: x => x.Name, includeProperties:"Properties");
+            return await unitOfWork.ClientRepo.GetPage(pageIndex, pageSize, orderBy: x => x.Name, includeProperties: includeProperties);
+        }
+
+        public async Task<List<Client>> SearchByName(string searchTerm, string includeProperties = "")
+        {
+            Debug.WriteLine("Search term " + searchTerm);
+            var results = (await unitOfWork.ClientRepo.Get(x => x.Name.Contains(searchTerm), includeProperties: includeProperties, orderBy: q => q.OrderByDescending(x => x.Name))).ToList();
+            Debug.WriteLine("Search results " + results.Count);
+            return results;
         }
 
         public async Task Create(Client client)
@@ -45,6 +53,11 @@ namespace ClientServerMVCDemo.Services.ClientServices
             foreach (var prop in props)
             {
                 unitOfWork.ClientPropertyRepo.Delete(prop);
+            }
+            var client = (await unitOfWork.ClientRepo.Get(x => x.Id == id, includeProperties: "FunctionPermissions")).FirstOrDefault();
+            foreach (var p in client.FunctionPermissions)
+            {
+                unitOfWork.ClientFunctionPermissionRepo.Delete(p);
             }
 
             await unitOfWork.SaveAsync();

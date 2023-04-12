@@ -1,0 +1,71 @@
+﻿@model ClientServerMVCDemo.ViewModels.Server.ServerManageAccessViewModel
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>Manage Access</h1>
+
+<h4>Server</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ManageAccess">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Server.Id" />
+            <div class="form-group">
+                <label class="control-label">@Model.Server.Name</label>
+                <input type="hidden" asp-for="Server.Name" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">@Model.Server.Description</label>
+                <input type="hidden" asp-for="Server.Description" />
+            </div>
+            <div class="form-group">
+                <label>Functions:</label>
+                @if (Model.Server.Functions != null)
+                {
+                    @for (int i = 0; i < Model.Server.Functions.Count; i++)
+                    {
+                        <input type="hidden" asp-for="@Model.Server.Functions[i].Id" />
+                        <input type="hidden" asp-for="@Model.Server.Functions[i].ServerId" />
+                        <hr />
+                        <div class="form-group row">
+                            <h3 class="col-lg-3">@Model.Server.Functions[i].Name</h3>
+                            <div class="col-lg-9">
+                                <input type="hidden" asp-for="@Model.Server.Functions[i].Name" />
+                            </div>
+                            @for(int j =0; j < Model.Server.Functions[i].Permissions.Count; j++)
+                            {
+                                <hr />
+                                <label class="col-lg-3 col-form-label">@Model.Server.Functions[i].Permissions[j].Client.Name</label>
+                                <input type="hidden" asp-for="@Model.Server.Functions[i].Permissions[j].ClientId" />
+                                <input type="hidden" asp-for="@Model.Server.Functions[i].Permissions[j].ServerFunctionId" />
+                                <input type="hidden" asp-for="@Model.Server.Functions[i].Permissions[j].Id" />
+                                <div class"col-lg-9">
+                                    <label class="col-lg-3 col-form-label">Access: </label>
+                                    <input asp-for="@Model.ClientsWithAccess[i][j]" />
+                                </div>
+                            }
+                            <a asp-action="ManageFunctionAccess" asp-route-id="@Model.Server.Functions[i].Id">Add permissions for other clients</a>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <br />
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

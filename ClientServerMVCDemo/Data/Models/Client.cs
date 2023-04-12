@@ -11,5 +11,6 @@ namespace ClientServerMVCDemo.Data.Models
         [Required]
         public string Description { get; set; }
         public IList<ClientProperty> Properties { get;set; }
+        public IList<ClientFunctionPermission> FunctionPermissions { get;set; }
     }
 }

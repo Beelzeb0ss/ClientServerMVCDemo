@@ -1,6 +1,7 @@
 using ClientServerMVCDemo.Data.Context;
 using ClientServerMVCDemo.Data.UnitOfWork;
 using ClientServerMVCDemo.Services.ClientServices;
+using ClientServerMVCDemo.Services.ServerFunction;
 using ClientServerMVCDemo.Services.ServerServices;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Text;
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<ClientServerDbContext>(options =>
 builder.Services.AddScoped<IClientServerUnitOfWork, ClientServerUnitOfWork>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IServerService, ServerService>();
+builder.Services.AddScoped<IServerFunctionService, ServerFunctionService>();
 
 builder.Services.AddControllersWithViews();
 
