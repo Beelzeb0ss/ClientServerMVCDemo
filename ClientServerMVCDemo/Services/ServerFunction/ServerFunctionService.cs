@@ -27,6 +27,16 @@ namespace ClientServerMVCDemo.Services.ServerFunction
             return true;
         }
 
+        public async Task<bool> DoesClientHaveAccess(int clientId, int functionId)
+        {
+            var result = await unitOfWork.ClientFunctionPermissionRepo.Get(x => x.ServerFunctionId == functionId && x.ClientId == clientId);
+            if (result.FirstOrDefault() == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public async Task AddPermissionForClient(Client client, Data.Models.ServerFunction function)
         {
             await unitOfWork.ClientFunctionPermissionRepo.Insert(new ClientFunctionPermission { ClientId = client.Id, ServerFunctionId = function.Id });

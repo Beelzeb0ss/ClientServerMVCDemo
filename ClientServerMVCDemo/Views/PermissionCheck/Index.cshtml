@@ -1,0 +1,45 @@
+﻿@model ClientServerMVCDemo.ViewModels.PermissionCheck.PermissionCheckViewModel
+
+@{
+    ViewData["Title"] = "Check Permission";
+}
+
+<h1>Check permission for client</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @if (Model.WasChecked)
+        {
+            if (Model.HasPermission)
+            {
+                <h3>Has Access</h3>
+            }
+            else
+            {
+                <h3>No Access</h3>
+            }
+        }
+
+        <form asp-action="Index">
+            <select asp-for="SelectedClientId" asp-items="Model.ClientDopdownItems">
+
+            </select>
+
+            <select asp-for="SelectedServerFunctionId" asp-items="Model.ServerFunctionsDopdownItems">
+
+            </select>
+
+            <div class="form-group">
+                <br />
+                <input type="submit" value="Check" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

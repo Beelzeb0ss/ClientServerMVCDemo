@@ -2,6 +2,8 @@
 using ClientServerMVCDemo.Data.Models;
 using ClientServerMVCDemo.Data.Utility;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Collections.Generic;
 
 namespace ClientServerMVCDemo.Services.ClientServices
 {
@@ -12,6 +14,11 @@ namespace ClientServerMVCDemo.Services.ClientServices
         public ClientService(IClientServerUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
+        }
+
+        public async Task<IEnumerable<Client>> Get(Expression<Func<Client, bool>> filter = null, string includeProperies = "")
+        {
+            return await unitOfWork.ClientRepo.Get(filter, orderBy: q => q.OrderByDescending(x => x.Name), includeProperties: includeProperies);
         }
 
         public async Task<Client> GetById(int id)

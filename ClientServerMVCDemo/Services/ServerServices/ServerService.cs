@@ -1,6 +1,7 @@
 ﻿using ClientServerMVCDemo.Data.Models;
 using ClientServerMVCDemo.Data.UnitOfWork;
 using ClientServerMVCDemo.Data.Utility;
+using System.Linq.Expressions;
 
 namespace ClientServerMVCDemo.Services.ServerServices
 {
@@ -12,7 +13,12 @@ namespace ClientServerMVCDemo.Services.ServerServices
         {
             this.unitOfWork = unitOfWork;
         }
-        //method to delete server function from db and remove from server
+
+        public async Task<IEnumerable<Server>> Get(Expression<Func<Server, bool>> filter = null, string includeProperies = "")
+        {
+            return await unitOfWork.ServerRepo.Get(filter, orderBy: q => q.OrderByDescending(x => x.Name), includeProperties: includeProperies);
+        }
+
         public async Task<Server> GetById(int id, string includeProperties = "")
         {
             return (await unitOfWork.ServerRepo.Get(x => x.Id == id, includeProperties: includeProperties)).FirstOrDefault(); ;
