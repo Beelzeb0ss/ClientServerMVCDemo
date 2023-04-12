@@ -9,20 +9,35 @@
             <h5 class="card-title">@client.Name</h5>
             <p class="card-text">@client.Description</p>
             <hr/>
-            <p class="card-text">Properties</p>
+            
+                @{
+                    int numberOfProps = 0;
+                    if(client.Properties != null)
+                    {
+                        numberOfProps = client.Properties.Count;
+                    }
+                    else
+                    {
+                        numberOfProps = 0;
+                    }
+                }
+
+            <p class="card-text">Properties (@numberOfProps):</p>
             @if (client.Properties != null)
             {
                 int count = 0;
-                @foreach (var kvp in client.Properties)
+                @foreach (var p in client.Properties)
                 {
-                    <p class="card-text">@kvp.Key = @kvp.Value</p>
-
-                    count++;
                     if(count > 1)
                     {
                         <p class="card-text">...</p>
                         break;
                     }
+                    else
+                    {
+                        <p class="card-text">@p.Key = @p.Value</p>
+                    }
+                    count++;
                 }
             }
             <a asp-action="Edit" asp-route-id="@client.Id">Edit</a>

@@ -7,6 +7,7 @@ namespace ClientServerMVCDemo.Services.ClientServices
     {
         Task Create(Client client);
         Task Delete(int id);
+        Task DeleteProperty(Client client, int indexInClient);
         Task<Client> GetById(int id);
         Task<PaginatedList<Client>> GetPage(int pageIndex, int pageSize);
         Task Update(Client client);

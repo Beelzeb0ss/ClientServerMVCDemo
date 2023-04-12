@@ -30,11 +30,13 @@
                 {
                     @for(int i = 0; i < Model.Server.Functions.Count; i++)
                     {
+                       <input type="hidden" asp-for="@Model.Server.Functions[i].Id" />
+                       <input type="hidden" asp-for="@Model.Server.Functions[i].ServerId" />
                         <hr />
                         <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">@Model.Server.Functions[i]</label>
+                            <label class="col-lg-3 col-form-label">@Model.Server.Functions[i].Name</label>
                             <div class="col-lg-9">
-                                <input asp-for="@Model.Server.Functions[i]" value="@Model.Server.Functions[i]" class="form-control">
+                                <input asp-for="@Model.Server.Functions[i].Name" value="@Model.Server.Functions[i].Name" class="form-control">
                             </div>
                             <div class"col-lg-9">
                                 <label class="col-lg-3 col-form-label">Delete?</label>

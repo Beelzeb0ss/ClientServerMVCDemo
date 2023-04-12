@@ -9,20 +9,35 @@
                 <h5 class="card-title">@server.Name</h5>
                 <p class="card-text">@server.Description</p>
                 <hr/>
-                <p class="card-text">Functions</p>
+
+                @{
+                    int numberOfFunctions = 0;
+                    if(server.Functions != null)
+                    {
+                        numberOfFunctions = server.Functions.Count;
+                    }
+                    else
+                    {
+                        numberOfFunctions = 0;
+                    }
+                }
+
+                <p class="card-text">Functions (@numberOfFunctions):</p>
                 @if (server.Functions != null)
                 {
                     int count = 0;
                     @foreach (var func in server.Functions)
                     {
-                        <p class="card-text">@func</p>
-
-                        count++;
                         if (count > 1)
                         {
                             <p class="card-text">...</p>
                             break;
                         }
+                        else
+                        {
+                            <p class="card-text">@func.Name</p>
+                        }
+                        count++;
                     }
                 }
                 <a asp-action="Edit" asp-route-id="@server.Id">Edit</a>

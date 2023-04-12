@@ -28,17 +28,20 @@
                 <label>Properties</label>
                 @if (Model.Client.Properties != null)
                 {
-                    @foreach (var kvp in Model.Client.Properties)
+                    @for(int i = 0; i < Model.Client.Properties.Count; i++)
                     {
+                       <input type="hidden" asp-for="@Model.Client.Properties[i].Id" />
+                       <input type="hidden" asp-for="@Model.Client.Properties[i].ClientId" />
                        <hr/>
                        <div class="form-group row">
-                           <label class="col-lg-3 col-form-label">@kvp.Key</label>
+                           <label class="col-lg-3 col-form-label">@Model.Client.Properties[i].Key</label>
+                            <input type="hidden" asp-for="@Model.Client.Properties[i].Key" />
                            <div class="col-lg-9">
-                                <input asp-for="@Model.Client.Properties[kvp.Key]" value="@kvp.Value" class="form-control">
+                                <input asp-for="@Model.Client.Properties[i].Value" value="@Model.Client.Properties[i].Value" class="form-control">
                            </div>
                            <div class"col-lg-9">
                                 <label class="col-lg-3 col-form-label">Delete?</label>
-                                <input asp-for="@Model.PropertiesToDelete[kvp.Key]"/>
+                                <input asp-for="@Model.PropertiesToDelete[i]"/>
                            </div>
                       </div>
                     }

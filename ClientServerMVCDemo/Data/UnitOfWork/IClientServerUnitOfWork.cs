@@ -7,6 +7,9 @@ namespace ClientServerMVCDemo.Data.UnitOfWork
     {
         GenericRepository<Client> ClientRepo { get; }
         GenericRepository<Server> ServerRepo { get; }
+        GenericRepository<ServerFunction> ServerFunctionRepo { get; }
+        GenericRepository<ClientProperty> ClientPropertyRepo { get; }
+
         void Save();
         Task SaveAsync();
     }

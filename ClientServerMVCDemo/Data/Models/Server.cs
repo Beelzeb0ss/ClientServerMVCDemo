@@ -11,7 +11,6 @@ namespace ClientServerMVCDemo.Data.Models
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
-        [NotMapped]
-        public IList<string> Functions { get; set; }
+        public IList<ServerFunction> Functions { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ClientServerMVCDemo.Services.ClientServices;
+﻿using ClientServerMVCDemo.Data.Models;
+using ClientServerMVCDemo.Services.ClientServices;
 using ClientServerMVCDemo.ViewModels.Client;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -16,13 +17,9 @@ namespace ClientServerMVCDemo.Controllers
 
         public async Task<IActionResult> Index(int page)
         {
-            Debug.WriteLine("page value = " + page);
             var viewModel = new ClientListViewModel();
 
-            //await clientService.Create(new Data.Models.Client() { Name = "Stoqn", Description = "desc", Properties = null });
-            //await clientService.Create(new Data.Models.Client() { Name = "Stoqn", Description = "desc", Properties = new Dictionary<string, string> { { "1", "Value1"} } });
-
-            if(page == 0)
+            if(page <= 0)
             {
                 page = 1;
             }
@@ -31,6 +28,11 @@ namespace ClientServerMVCDemo.Controllers
             viewModel.CurrentPage = pageData.PageIndex;
             viewModel.HasNextPage = pageData.HasNextPage;
             viewModel.HasPreviousPage = pageData.HasPreviousPage;
+
+            foreach (var client in viewModel.Clients)
+            {
+                Debug.WriteLine("client id = " + client.Id.ToString());
+            }
 
             return View(viewModel);
         }
@@ -47,20 +49,20 @@ namespace ClientServerMVCDemo.Controllers
         {
             if(vm.Client.Properties == null)
             {
-                vm.Client.Properties = new Dictionary<string, string>();
+                vm.Client.Properties = new List<ClientProperty>();
             }
 
-            if(!string.IsNullOrWhiteSpace(vm.NewPropertyName) && !string.IsNullOrWhiteSpace(vm.NewPropertyValue))
+            for (int i = vm.PropertiesToDelete.Count - 1; i >= 0; i--)
             {
-                vm.Client.Properties.Add(vm.NewPropertyName, vm.NewPropertyValue);
-            }
-
-            foreach (var kvp in vm.PropertiesToDelete)
-            {
-                if (kvp.Value)
+                if (vm.PropertiesToDelete[i])
                 {
-                    vm.Client.Properties.Remove(kvp.Key);
+                    await clientService.DeleteProperty(vm.Client, i);
                 }
+            }
+
+            if (!string.IsNullOrWhiteSpace(vm.NewPropertyName) && !string.IsNullOrWhiteSpace(vm.NewPropertyValue))
+            {
+                vm.Client.Properties.Add(new ClientProperty { Key = vm.NewPropertyName, Value = vm.NewPropertyValue });
             }
 
             await clientService.Update(vm.Client);
@@ -76,14 +78,14 @@ namespace ClientServerMVCDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ClientCreateViewModel vm)
         {
-            if (vm.Client.Properties == null)
+            if(vm.Client.Properties == null)
             {
-                vm.Client.Properties = new Dictionary<string, string>();
+                vm.Client.Properties = new List<ClientProperty>();
             }
 
             if (!string.IsNullOrWhiteSpace(vm.NewPropertyName) && !string.IsNullOrWhiteSpace(vm.NewPropertyValue))
             {
-                vm.Client.Properties.Add(vm.NewPropertyName, vm.NewPropertyValue);
+                vm.Client.Properties.Add(new ClientProperty { Key = vm.NewPropertyName, Value = vm.NewPropertyValue });
             }
 
             await clientService.Create(vm.Client);

@@ -12,15 +12,15 @@ namespace ClientServerMVCDemo.Services.ServerServices
         {
             this.unitOfWork = unitOfWork;
         }
-
+        //method to delete server function from db and remove from server
         public async Task<Server> GetById(int id)
         {
-            return await unitOfWork.ServerRepo.GetByID(id);
+            return unitOfWork.ServerRepo.Get(x => x.Id == id, includeProperties: "Functions").FirstOrDefault(); ;
         }
 
         public async Task<PaginatedList<Server>> GetPage(int pageIndex, int pageSize)
         {
-            return await unitOfWork.ServerRepo.GetPage(pageIndex, pageSize, orderBy: x => x.Name);
+            return await unitOfWork.ServerRepo.GetPage(pageIndex, pageSize, orderBy: x => x.Name, includeProperties:"Functions");
         }
 
         public async Task Create(Server client)
@@ -38,6 +38,23 @@ namespace ClientServerMVCDemo.Services.ServerServices
         public async Task Delete(int id)
         {
             unitOfWork.ServerRepo.Delete(id);
+
+            //cascade does not work in memory
+            var funcs = unitOfWork.ServerFunctionRepo.Get(x => x.ServerId == id);
+            foreach (var func in funcs)
+            {
+                unitOfWork.ServerFunctionRepo.Delete(func);
+            }
+
+            await unitOfWork.SaveAsync();
+        }
+
+        public async Task DeleteFunction(Server server, int indexInServer)
+        {
+            var func = server.Functions[indexInServer];
+            server.Functions.RemoveAt(indexInServer);
+            unitOfWork.ServerFunctionRepo.Delete(func);
+
             await unitOfWork.SaveAsync();
         }
     }

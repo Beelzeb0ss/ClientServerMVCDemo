@@ -1,4 +1,5 @@
-﻿using ClientServerMVCDemo.Services.ServerServices;
+﻿using ClientServerMVCDemo.Data.Models;
+using ClientServerMVCDemo.Services.ServerServices;
 using ClientServerMVCDemo.ViewModels.Server;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -16,11 +17,7 @@ namespace ClientServerMVCDemo.Controllers
 
         public async Task<IActionResult> Index(int page)
         {
-            Debug.WriteLine("page value = " + page);
             var viewModel = new ServerListViewModel();
-
-            //await serverService.Create(new Data.Models.Server() { Name = "Serv1", Description = "desc1", Functions = new List<string>() { "func1", "func2" } });
-            //await serverService.Create(new Data.Models.Server() { Name = "Serv2", Description = "desc2" });
 
             if (page == 0)
             {
@@ -48,22 +45,22 @@ namespace ClientServerMVCDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(ServerEditViewModel vm)
         {
-            if (vm.Server.Functions == null)
+            if(vm.Server.Functions == null)
             {
-                vm.Server.Functions = new List<string>();
+                vm.Server.Functions = new List<ServerFunction>();
             }
 
             for (int i = vm.Server.Functions.Count-1; i >= 0; i--)
             {
                 if (vm.FunctionsToDelete[i])
                 {
-                    vm.Server.Functions.RemoveAt(i);
+                    await serverService.DeleteFunction(vm.Server, i);
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(vm.NewFunction))
             {
-                vm.Server.Functions.Add(vm.NewFunction);
+                vm.Server.Functions.Add(new ServerFunction { Name = vm.NewFunction});
             }
 
             await serverService.Update(vm.Server);
@@ -81,12 +78,12 @@ namespace ClientServerMVCDemo.Controllers
         {
             if (vm.Server.Functions == null)
             {
-                vm.Server.Functions = new List<string>();
+                vm.Server.Functions = new List<ServerFunction>();
             }
 
             if (!string.IsNullOrWhiteSpace(vm.NewFunction))
             {
-                vm.Server.Functions.Add(vm.NewFunction);
+                vm.Server.Functions.Add(new ServerFunction { Name = vm.NewFunction });
             }
 
             await serverService.Create(vm.Server);

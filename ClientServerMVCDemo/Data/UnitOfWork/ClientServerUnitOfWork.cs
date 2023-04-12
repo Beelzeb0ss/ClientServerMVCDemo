@@ -9,17 +9,19 @@ namespace ClientServerMVCDemo.Data.UnitOfWork
         private ClientServerDbContext context;
         private GenericRepository<Client> clientRepo;
         private GenericRepository<Server> serverRepo;
+        private GenericRepository<ClientProperty> clientPropertyRepo;
+        private GenericRepository<ServerFunction> serverFunctionRepo;
 
         public ClientServerUnitOfWork(ClientServerDbContext context)
         {
             this.context = context;
+            context.Database.EnsureCreated(); //move to startup/program/kvoto e sq
         }
 
         public GenericRepository<Client> ClientRepo
         {
             get
             {
-
                 if (clientRepo == null)
                 {
                     clientRepo = new GenericRepository<Client>(context);
@@ -32,12 +34,35 @@ namespace ClientServerMVCDemo.Data.UnitOfWork
         {
             get
             {
-
                 if (serverRepo == null)
                 {
                     serverRepo = new GenericRepository<Server>(context);
                 }
                 return serverRepo;
+            }
+        }
+
+        public GenericRepository<ClientProperty> ClientPropertyRepo
+        {
+            get
+            {
+                if(clientPropertyRepo == null)
+                {
+                    clientPropertyRepo = new GenericRepository<ClientProperty>(context);
+                }
+                return clientPropertyRepo;
+            }
+        }
+
+        public GenericRepository<ServerFunction> ServerFunctionRepo
+        {
+            get
+            {
+                if (serverFunctionRepo == null)
+                {
+                    serverFunctionRepo= new GenericRepository<ServerFunction>(context);
+                }
+                return serverFunctionRepo;
             }
         }
 

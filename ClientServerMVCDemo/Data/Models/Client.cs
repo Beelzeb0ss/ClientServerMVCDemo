@@ -10,7 +10,6 @@ namespace ClientServerMVCDemo.Data.Models
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
-        [NotMapped]
-        public IDictionary<string, string> Properties { get;set; }
+        public IList<ClientProperty> Properties { get;set; }
     }
 }

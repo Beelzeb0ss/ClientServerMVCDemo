@@ -14,16 +14,16 @@
                     return;
                 }
 
-                PropertiesToDelete = new Dictionary<string, bool>();
-                foreach (var kvp in client.Properties) 
+                PropertiesToDelete = new List<bool>();
+                for (int i = 0; i < Client.Properties.Count; i++)
                 {
-                    PropertiesToDelete.Add(kvp.Key, false);
+                    PropertiesToDelete.Add(false);
                 }
             }
         }
 
         public string NewPropertyName { get; set; }
         public string NewPropertyValue { get; set; }
-        public Dictionary<string, bool> PropertiesToDelete { get;set; }
+        public List<bool> PropertiesToDelete { get;set; } = new List<bool>();
     }
 }
