@@ -11,6 +11,7 @@ namespace ClientServerMVCDemo.Data.UnitOfWork
         private GenericRepository<Server> serverRepo;
         private GenericRepository<ClientProperty> clientPropertyRepo;
         private GenericRepository<ServerFunction> serverFunctionRepo;
+        private GenericRepository<ClientFunctionPermission> clientFunctionPermissionRepo;
 
         public ClientServerUnitOfWork(ClientServerDbContext context)
         {
@@ -63,6 +64,18 @@ namespace ClientServerMVCDemo.Data.UnitOfWork
                     serverFunctionRepo= new GenericRepository<ServerFunction>(context);
                 }
                 return serverFunctionRepo;
+            }
+        }
+
+        public GenericRepository<ClientFunctionPermission> ClientFunctionPermissionRepo
+        {
+            get
+            {
+                if(clientFunctionPermissionRepo == null)
+                {
+                    clientFunctionPermissionRepo = new GenericRepository<ClientFunctionPermission>(context);
+                }
+                return clientFunctionPermissionRepo;
             }
         }
 

@@ -16,7 +16,7 @@ namespace ClientServerMVCDemo.Services.ClientServices
 
         public async Task<Client> GetById(int id)
         {
-            return unitOfWork.ClientRepo.Get(x => x.Id == id, includeProperties:"Properties").FirstOrDefault();
+            return (await unitOfWork.ClientRepo.Get(x => x.Id == id, includeProperties:"Properties")).FirstOrDefault();
         }
 
         public async Task<PaginatedList<Client>> GetPage(int pageIndex, int pageSize)
@@ -26,7 +26,7 @@ namespace ClientServerMVCDemo.Services.ClientServices
 
         public async Task Create(Client client)
         {
-            unitOfWork.ClientRepo.Insert(client);
+            await unitOfWork.ClientRepo.Insert(client);
             await unitOfWork.SaveAsync();
         }
 
@@ -41,7 +41,7 @@ namespace ClientServerMVCDemo.Services.ClientServices
             unitOfWork.ClientRepo.Delete(id);
 
             //cascade does not work in-memory
-            var props = unitOfWork.ClientPropertyRepo.Get(x => x.ClientId == id);
+            var props = await unitOfWork.ClientPropertyRepo.Get(x => x.ClientId == id);
             foreach (var prop in props)
             {
                 unitOfWork.ClientPropertyRepo.Delete(prop);

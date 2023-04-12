@@ -15,7 +15,7 @@ namespace ClientServerMVCDemo.Services.ServerServices
         //method to delete server function from db and remove from server
         public async Task<Server> GetById(int id)
         {
-            return unitOfWork.ServerRepo.Get(x => x.Id == id, includeProperties: "Functions").FirstOrDefault(); ;
+            return (await unitOfWork.ServerRepo.Get(x => x.Id == id, includeProperties: "Functions")).FirstOrDefault(); ;
         }
 
         public async Task<PaginatedList<Server>> GetPage(int pageIndex, int pageSize)
@@ -25,7 +25,7 @@ namespace ClientServerMVCDemo.Services.ServerServices
 
         public async Task Create(Server client)
         {
-            unitOfWork.ServerRepo.Insert(client);
+            await unitOfWork.ServerRepo.Insert(client);
             await unitOfWork.SaveAsync();
         }
 
@@ -40,7 +40,7 @@ namespace ClientServerMVCDemo.Services.ServerServices
             unitOfWork.ServerRepo.Delete(id);
 
             //cascade does not work in memory
-            var funcs = unitOfWork.ServerFunctionRepo.Get(x => x.ServerId == id);
+            var funcs = await unitOfWork.ServerFunctionRepo.Get(x => x.ServerId == id);
             foreach (var func in funcs)
             {
                 unitOfWork.ServerFunctionRepo.Delete(func);
